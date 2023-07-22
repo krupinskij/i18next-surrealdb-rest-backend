@@ -61,17 +61,28 @@ class Backend implements BackendModule<Options> {
     }
   }
 
-  async create(
-    languages: readonly string[],
-    namespace: string,
-    key: string,
-    fallbackValue: string
-  ) {
-    console.log(languages, namespace, key, fallbackValue);
+  createSingle(language: string, namespace: string, key: string, fallbackValue: string) {
+    return fetch(`${this.options.path}/key/${namespace}/${language}`, {
+      headers: this.headers,
+      method: 'PATCH',
+      body: JSON.stringify({ [key]: fallbackValue }),
+      ...this.options.requestOptions,
+    });
+  }
+
+  create(languages: readonly string[], namespace: string, key: string, fallbackValue: string) {
+    Promise.allSettled(
+      languages.map((language) => this.createSingle(language, namespace, key, fallbackValue))
+    );
   }
 
   save(language: string, namespace: string, data: ResourceLanguage) {
-    console.log(language, namespace, data);
+    fetch(`${this.options.path}/key/${namespace}/${language}`, {
+      headers: this.headers,
+      method: 'PUT',
+      body: JSON.stringify(data),
+      ...this.options.requestOptions,
+    });
   }
 }
 
