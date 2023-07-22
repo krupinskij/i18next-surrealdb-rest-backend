@@ -3,3 +3,4 @@ node_modules
 # builds
 *.tgz
 dist
+dev
