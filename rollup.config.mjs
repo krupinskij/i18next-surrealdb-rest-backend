@@ -10,6 +10,7 @@ const resolveNonExternals = ({ dir = '', extension = '', nonExternals = [] }) =>
     if (nonExternals.some((nonExternal) => source.startsWith(nonExternal))) {
       return `${dir}/${source}${extension}`;
     }
+    return null;
   },
 });
 
@@ -33,7 +34,7 @@ export default [
       resolve(),
       commonJS(),
       typescript({
-        tsconfig: './tsconfig.json',
+        tsconfig: './tsconfig.build.json',
       }),
       terser(),
     ],
@@ -45,7 +46,7 @@ export default [
       resolveNonExternals({
         dir: `${process.env.DIR}/esm/types`,
         extension: '.d.ts',
-        nonExternals: ['./helpers', './model'],
+        nonExternals: ['./model'],
       }),
       dts(),
     ],

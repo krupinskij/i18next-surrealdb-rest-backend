@@ -17,5 +17,5 @@ export const defaultOptions: RequiredOptions = {
   path: '/locales',
   NS: 'ns',
   DB: 'db',
-  customFetch: fetch,
+  customFetch: fetch.bind(window),
 };

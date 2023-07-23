@@ -38,18 +38,15 @@ class Backend implements BackendModule<Options> {
 
   async read(language: string, namespace: string, callback: ReadCallback) {
     try {
-      const data = await this.options
+      const [data] = await this.options
         .customFetch(`${this.options.path}/key/${namespace}/${language}`, {
           headers: this.headers,
           method: 'GET',
           ...this.options.requestOptions,
         })
-        .then((resp) => resp.json())
-        .catch((err) => {
-          callback(err, null);
-        });
+        .then((resp) => resp.json());
 
-      const { result, status, detail } = data[0];
+      const { result, status, detail } = data;
 
       if (status === 'ERR') {
         callback(detail, null);
