@@ -1,6 +1,5 @@
 import { Services, InitOptions, BackendModule, ReadCallback, ResourceLanguage } from 'i18next';
 
-import fetch from './helpers/fetch';
 import { Options, RequiredOptions, defaultOptions } from './model';
 
 class Backend implements BackendModule<Options> {
@@ -9,7 +8,7 @@ class Backend implements BackendModule<Options> {
 
   services?: Services | null;
   options!: RequiredOptions;
-  i18nextOptions?: InitOptions;
+  i18nextOptions!: InitOptions;
 
   headers!: Headers;
 
@@ -39,11 +38,12 @@ class Backend implements BackendModule<Options> {
 
   async read(language: string, namespace: string, callback: ReadCallback) {
     try {
-      const data = await fetch(`${this.options.path}/key/${namespace}/${language}`, {
-        headers: this.headers,
-        method: 'GET',
-        ...this.options.requestOptions,
-      })
+      const data = await this.options
+        .customFetch(`${this.options.path}/key/${namespace}/${language}`, {
+          headers: this.headers,
+          method: 'GET',
+          ...this.options.requestOptions,
+        })
         .then((resp) => resp.json())
         .catch((err) => {
           callback(err, null);
@@ -62,7 +62,7 @@ class Backend implements BackendModule<Options> {
   }
 
   createSingle(language: string, namespace: string, key: string, fallbackValue: string) {
-    return fetch(`${this.options.path}/key/${namespace}/${language}`, {
+    return this.options.customFetch(`${this.options.path}/key/${namespace}/${language}`, {
       headers: this.headers,
       method: 'PATCH',
       body: JSON.stringify({ [key]: fallbackValue }),
@@ -77,7 +77,7 @@ class Backend implements BackendModule<Options> {
   }
 
   save(language: string, namespace: string, data: ResourceLanguage) {
-    fetch(`${this.options.path}/key/${namespace}/${language}`, {
+    this.options.customFetch(`${this.options.path}/key/${namespace}/${language}`, {
       headers: this.headers,
       method: 'PUT',
       body: JSON.stringify(data),

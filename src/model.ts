@@ -7,6 +7,7 @@ export type RequiredOptions = {
     pass: string;
   };
   customHeaders?: HeadersInit;
+  customFetch: typeof fetch;
   requestOptions?: RequestInit;
 };
 
@@ -16,4 +17,5 @@ export const defaultOptions: RequiredOptions = {
   path: '/locales',
   NS: 'ns',
   DB: 'db',
+  customFetch: fetch,
 };
