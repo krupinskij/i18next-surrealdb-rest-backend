@@ -1,6 +1,6 @@
 {
   "name": "i18next-surrealdb-rest-backend",
-  "version": "1.0.0",
+  "version": "1.0.0-alpha",
   "description": "i18next backend for loading translation from surrealdb using rest",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -27,7 +27,7 @@
     "i18n"
   ],
   "author": "Jan Krupiński",
-  "license": "ISC",
+  "license": "MIT",
   "files": [
     "dist",
     "package.json"
