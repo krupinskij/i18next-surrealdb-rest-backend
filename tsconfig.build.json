@@ -16,5 +16,6 @@
     "emitDeclarationOnly": true,
     "baseUrl": "src",
     "types": ["vi-fetch/matchers"]
-  }
+  },
+  "exclude": ["./vitest.*", "./tests/"]
 }
